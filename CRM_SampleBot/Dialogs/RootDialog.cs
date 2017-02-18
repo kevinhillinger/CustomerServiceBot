@@ -73,7 +73,7 @@ namespace CRM_SampleBot.Dialogs
             context.Call(new Representative(), this.ResumeAfterOptionDialog);
         }
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
+        private async Task MessageReceivedAsync(IDialogContext context)
         {
             // clear the LUIS entities from userData
             context.UserData.RemoveValue("LuisResult");
@@ -112,7 +112,7 @@ namespace CRM_SampleBot.Dialogs
                 await context.PostAsync($"Ooops! Too many attemps :( You can start again!");
 
                 //This sets us in a waiting state, after running the prompt again. 
-                context.Wait(this.MessageReceivedAsync);
+                await this.MessageReceivedAsync(context);
             }
         }
 
@@ -128,7 +128,7 @@ namespace CRM_SampleBot.Dialogs
             }
             finally
             {
-                context.Wait(this.MessageReceivedAsync);
+                await this.MessageReceivedAsync(context);
             }
         }
     }

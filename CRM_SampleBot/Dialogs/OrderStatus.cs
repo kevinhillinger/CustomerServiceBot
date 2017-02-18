@@ -21,58 +21,56 @@ namespace CRM_SampleBot.Dialogs
             // check if LuisResult contains an entity
             if ((result != null) && (result.Entities.Count > 0))
             {
-                // There is an entity. Use for the search (assume correct)
-                string message = $"getOrderStatus for order #{result.Entities[0].Entity}";
-                await context.PostAsync(message);
-
-                // set entity flag to true.. no need to ask user for one
-                bool haveEntity = true;
-                context.UserData.SetValue<bool>("haveEntity", haveEntity);
+                // store orderNumber
+                var orderNumber = result.Entities[0].Entity;
+                context.UserData.SetValue<string>("orderNumber", orderNumber);
 
                 // call API and display results
-                context.Wait(CallAPI);
+                await CallAPI(context);          
             }
             else
             {
                 // There is no entity, prompt user for the search paramater
                 await context.PostAsync("What order number would you like to search?");
 
-                // set entity flag to false.. we need to ask user for one
-                bool haveEntity = false;
-                context.UserData.SetValue<bool>("haveEntity", haveEntity);
-
-                // call API and display results
-                context.Wait(CallAPI);
+                // call function to store result
+                context.Wait(getEntity);
             }
         }
-        public async Task CallAPI(IDialogContext context, IAwaitable<IMessageActivity> argument)
+
+        public async Task getEntity(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
-            bool result;
-            context.UserData.TryGetValue<bool>("haveEntity", out result);
+            // we do not have an entity, take it from the argument
+            //variable to hold message coming in
+            var arg = await argument;
+            var orderNumber = arg.Text;
 
-            if (result)
-            {
-                // we already have an entity continue with API call using LUIS
-                // load the LuisResult from context.UserData
-                LuisResult entity = new LuisResult();
-                context.UserData.TryGetValue<LuisResult>("LuisResult", out entity);
-                var orderNumber = entity.Entities[0].Entity;
+            // store orderNumber
+            context.UserData.SetValue<string>("orderNumber", orderNumber);
 
-                string message = $"getOrderStatus for order #{orderNumber}";
-                await context.PostAsync(message);
+            // call API and display results
+            await CallAPI(context);
+        }
 
-            } else {
-                // we do not have an entity, take it from the argument
-                //variable to hold message coming in
-                var orderNumber = await argument;
+        public async Task CallAPI(IDialogContext context)
+        {
+            // retrieve orderNumber to be searched
+            var orderNumber = "";
+            context.UserData.TryGetValue<string>("orderNumber", out orderNumber);
 
-                string message = $"getOrderStatus for order #{orderNumber.Text}";
-                await context.PostAsync(message);
+            string message = $"getOrderStatus for order #{orderNumber}";
+            await context.PostAsync(message);
 
-            }
+            // Call API with orderNumber
+            message = $"Calling API..";
+            await context.PostAsync(message);
+
+            // Display results
+            message = $"Displaying API results..";
+            await context.PostAsync(message);
 
             //call context.done to exit this dialog and go back to the root dialog
-            context.Done(argument);
+            context.Done(context);
             
         }
     }
