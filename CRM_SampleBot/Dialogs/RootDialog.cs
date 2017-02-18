@@ -12,7 +12,7 @@ using Microsoft.Bot.Connector;
 namespace CRM_SampleBot.Dialogs
 {
     [Serializable]
-    [LuisModel("fbc3cc42-a0b2-44e6-b341-586d2bf3c149", "5778c0637da34e87966e74313ace1083")]
+    [LuisModel(<LUIS_ID>, <LUIS_KEY>)]
     public class RootDialog : LuisDialog<object>
     {
         // Options for user to choose
