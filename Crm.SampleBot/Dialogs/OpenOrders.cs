@@ -1,12 +1,9 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
-namespace Crm.SampleBot.Web.Dialogs
+namespace Crm.SampleBot.Dialogs
 {
     [Serializable]
     public class OpenOrders : IDialog<object>

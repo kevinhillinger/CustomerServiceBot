@@ -2,12 +2,9 @@
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
-namespace Crm.SampleBot.Web.Dialogs
+namespace Crm.SampleBot.Dialogs
 {
     [Serializable]
     public class OrderStatus : IDialog<object>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Crm.SampleBot.Web.Dialogs
+namespace Crm.SampleBot.Dialogs
 {
     [Serializable]
     public class Representative : IDialog<object>

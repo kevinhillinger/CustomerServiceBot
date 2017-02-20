@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
-using System.Web.Configuration;
-using Microsoft.Bot.Connector;
 
-namespace Crm.SampleBot.Web.Dialogs
+namespace Crm.SampleBot.Dialogs
 {
     [Serializable]
     [LuisModel("<LUIS_ID>", "<LUIS_KEY>")]
