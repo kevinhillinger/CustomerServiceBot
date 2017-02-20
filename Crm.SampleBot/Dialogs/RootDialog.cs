@@ -16,6 +16,11 @@ namespace Crm.SampleBot.Dialogs
         private const string OpenOrdersOption = "Find Open Orders";
         private const string RepOption = "Find Representative";
 
+        public RootDialog(ILuisService service)
+            : base(service)
+        {
+        }
+
         [LuisIntent("")]
         [LuisIntent("None")]
         public async Task None(IDialogContext context, LuisResult result)

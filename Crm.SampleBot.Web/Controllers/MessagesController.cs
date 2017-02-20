@@ -8,9 +8,17 @@ using Crm.SampleBot.Dialogs;
 
 namespace Crm.SampleBot.Web
 {
+    [Route("api/messages")]
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        private DialogFactory dialogFactory;
+
+        public MessagesController(DialogFactory dialogFactory)
+        {
+            this.dialogFactory = dialogFactory;
+        }
+
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
@@ -19,7 +27,8 @@ namespace Crm.SampleBot.Web
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new RootDialog());
+                var dialog = dialogFactory.Create<RootDialog>();
+                await Conversation.SendAsync(activity, () => dialog);
             }
             else
             {

@@ -87,10 +87,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\BotModule.cs" />
+    <Compile Include="Configuration\LuisModelSettings.cs" />
     <Compile Include="Dialogs\OpenOrders.cs" />
     <Compile Include="Dialogs\OrderStatus.cs" />
     <Compile Include="Dialogs\Representative.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
+    <Compile Include="Dialogs\DialogFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
