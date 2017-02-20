@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace CRM_SampleBot
+namespace Crm.SampleBot.Web
 {
     public static class WebApiConfig
     {

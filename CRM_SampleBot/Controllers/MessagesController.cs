@@ -8,9 +8,9 @@ using System.Web.Http.Description;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
 using Microsoft.Bot.Builder.Dialogs;
-using CRM_SampleBot.Dialogs;
+using Crm.SampleBot.Web.Dialogs;
 
-namespace CRM_SampleBot
+namespace Crm.SampleBot.Web
 {
     [BotAuthentication]
     public class MessagesController : ApiController

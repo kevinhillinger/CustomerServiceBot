@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace CRM_SampleBot.Dialogs
+namespace Crm.SampleBot.Web.Dialogs
 {
     [Serializable]
     public class OrderStatus : IDialog<object>

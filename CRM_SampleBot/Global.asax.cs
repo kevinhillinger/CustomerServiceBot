@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 
-namespace CRM_SampleBot
+namespace Crm.SampleBot.Web
 {
     public class WebApiApplication : System.Web.HttpApplication
     {

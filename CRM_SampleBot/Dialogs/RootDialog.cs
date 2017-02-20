@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Configuration;
 using Microsoft.Bot.Connector;
 
-namespace CRM_SampleBot.Dialogs
+namespace Crm.SampleBot.Web.Dialogs
 {
     [Serializable]
     [LuisModel("<LUIS_ID>", "<LUIS_KEY>")]
