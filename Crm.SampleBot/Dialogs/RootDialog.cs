@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace Crm.SampleBot.Dialogs
 {
     [Serializable]
-    [LuisModel("<LUIS_ID>", "<LUIS_KEY>")]
     public class RootDialog : LuisDialog<object>
     {
         // Options for user to choose
@@ -34,7 +33,7 @@ namespace Crm.SampleBot.Dialogs
         }
 
         [LuisIntent("greeting")]
-        public async Task greeting(IDialogContext context, LuisResult result)
+        public async Task Greeting(IDialogContext context, LuisResult result)
         {
             // go to main menu with choices - prompt to choose "What would you like to do?"
             PromptDialog.Choice(
@@ -45,7 +44,7 @@ namespace Crm.SampleBot.Dialogs
         }
 
         [LuisIntent("getOrderStatus")]
-        public async Task getOrderStatus(IDialogContext context, LuisResult result)
+        public async Task GetOrderStatus(IDialogContext context, LuisResult result)
         {
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
@@ -55,7 +54,7 @@ namespace Crm.SampleBot.Dialogs
         }
 
         [LuisIntent("getOpenOrders")]
-        public async Task getOpenOrders(IDialogContext context, LuisResult result)
+        public async Task GetOpenOrders(IDialogContext context, LuisResult result)
         {
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
@@ -65,7 +64,7 @@ namespace Crm.SampleBot.Dialogs
         }
 
         [LuisIntent("getRep")]
-        public async Task getRep(IDialogContext context, LuisResult result)
+        public async Task GetRep(IDialogContext context, LuisResult result)
         {
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
