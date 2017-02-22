@@ -14,6 +14,9 @@ namespace Crm.SampleBot.Dialogs.Order
         {
             string message = $"Inside OrderAccount";
             await context.PostAsync(message);
+
+            //call context.done to exit this dialog and go back to the root dialog
+            context.Done(context);
         }
     }
 }

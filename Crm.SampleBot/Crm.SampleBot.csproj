@@ -90,13 +90,11 @@
     <Compile Include="Configuration\BotModule.cs" />
     <Compile Include="Configuration\LuisModelSettings.cs" />
     <Compile Include="Dialogs\MoreOptions\MoreOptionsRoot.cs" />
-    <Compile Include="Dialogs\OpenOrders.cs" />
     <Compile Include="Dialogs\OrderStatus.cs" />
     <Compile Include="Dialogs\Order\OrderAccount.cs" />
     <Compile Include="Dialogs\Order\OrderDate.cs" />
     <Compile Include="Dialogs\Order\OrderNumber.cs" />
     <Compile Include="Dialogs\Order\OrderRoot.cs" />
-    <Compile Include="Dialogs\Representative.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="Dialogs\DialogFactory.cs" />
     <Compile Include="Dialogs\ServiceRepresentative\ServiceRepresentativeRoot.cs" />

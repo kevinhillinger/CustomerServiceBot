@@ -19,10 +19,6 @@ namespace Crm.SampleBot.Configuration
                 return new RootDialog(service);
             });
 
-            builder.RegisterType<OpenOrders>().AsSelf();
-            builder.RegisterType<OrderStatus>().AsSelf();
-            builder.RegisterType<Representative>().AsSelf();
-
             builder.RegisterType<DialogFactory>().AsSelf();
 
             base.Load(builder);
