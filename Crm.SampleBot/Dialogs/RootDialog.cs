@@ -19,11 +19,13 @@ namespace Crm.SampleBot.Dialogs
         private const string ServiceRepresentative = "Service Representative";
         private const string MoreOptions = "More Options";
         private readonly IOrdersApi ordersApi;
+        private readonly IDialogFactory dialogFactory;
 
-        public RootDialog(ILuisService service, IOrdersApi ordersApi)
+        public RootDialog(ILuisService service, IOrdersApi ordersApi, IDialogFactory dialogFactory)
             : base(service)
         {
             this.ordersApi = ordersApi;
+            this.dialogFactory = dialogFactory;
         }
 
         [LuisIntent("")]
@@ -55,8 +57,7 @@ namespace Crm.SampleBot.Dialogs
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
-            // Start new dialog
-            context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
+            StartDialog<OrderRoot>(context);
         }
 
         [LuisIntent("Order.Number")]
@@ -146,6 +147,11 @@ namespace Crm.SampleBot.Dialogs
             {
                 await this.MessageReceivedAsync(context);
             }
+        }
+
+        private void StartDialog<TDialog>(IDialogContext context)
+        {
+            context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
         }
     }
 }

@@ -21,7 +21,6 @@ namespace Crm.SampleBot.Web
             ConfigureApi(builder);
 
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            // var container = builder.Build();
             var container = Conversation.Container;
 
             // need the below to fix a bug with serialization for injected dependencies into dialogs

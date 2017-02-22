@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="Configuration\BotModule.cs" />
     <Compile Include="Configuration\LuisModelSettings.cs" />
+    <Compile Include="Dialogs\IDialogFactory.cs" />
     <Compile Include="Dialogs\MoreOptions\MoreOptionsRoot.cs" />
     <Compile Include="Dialogs\OpenOrders.cs" />
     <Compile Include="Dialogs\OrderStatus.cs" />

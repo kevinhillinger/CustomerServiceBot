@@ -14,22 +14,25 @@ namespace Crm.SampleBot.Configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register<RootDialog>(c =>
-            {
+            builder.RegisterType<DialogFactory>()
+                .Keyed<IDialogFactory>(FiberModule.Key_DoNotSerialize)
+                .As<IDialogFactory>();
+
+            builder.Register<ILuisService>(c => {
                 var settings = c.Resolve<LuisModelSettings>();
-                var ordersApi = c.Resolve<IOrdersApi>();
                 var service = new LuisService(new LuisModelAttribute(settings.ModelId, settings.SubscriptionKey));
 
-                return new RootDialog(service, ordersApi);
-            })
+                return service;
+            });
+
+            builder.RegisterType<RootDialog>()
             .Keyed<RootDialog>(FiberModule.Key_DoNotSerialize)
             .AsSelf();
 
             builder.RegisterType<OpenOrders>().AsSelf();
             builder.RegisterType<OrderStatus>().AsSelf();
             builder.RegisterType<Representative>().AsSelf();
-
-            builder.RegisterType<DialogFactory>().AsSelf();
+            
 
             base.Load(builder);
         }
