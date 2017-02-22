@@ -73,8 +73,8 @@ namespace Crm.SampleBot.Dialogs.Order
 
         private async Task MessageReceivedAsync(IDialogContext context)
         {
-            string message = $"MessageRecievedAsync_OrderRoot";
-            await context.PostAsync(message);
+            //returning from order search.. return back to RootDialog
+            context.Done(context);
         }
     }
 }
