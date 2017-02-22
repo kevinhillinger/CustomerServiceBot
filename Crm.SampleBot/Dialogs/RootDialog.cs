@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Crm.SampleBot.Dialogs.Order;
 using Crm.SampleBot.Dialogs.ServiceRepresentative;
 using Crm.SampleBot.Dialogs.MoreOptions;
+using Crm.Orders;
 
 namespace Crm.SampleBot.Dialogs
 {
@@ -17,10 +18,12 @@ namespace Crm.SampleBot.Dialogs
         private const string OrderStatusOption = "Check Order Status";
         private const string ServiceRepresentative = "Service Representative";
         private const string MoreOptions = "More Options";
+        private readonly IOrdersApi ordersApi;
 
-        public RootDialog(ILuisService service)
+        public RootDialog(ILuisService service, IOrdersApi ordersApi)
             : base(service)
         {
+            this.ordersApi = ordersApi;
         }
 
         [LuisIntent("")]
