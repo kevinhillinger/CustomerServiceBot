@@ -4,6 +4,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
+using Crm.Orders;
 
 namespace Crm.SampleBot.Dialogs
 {
@@ -14,10 +15,12 @@ namespace Crm.SampleBot.Dialogs
         private const string OrderStatusOption = "Check Order Status";
         private const string OpenOrdersOption = "Find Open Orders";
         private const string RepOption = "Find Representative";
+        private readonly IOrdersApi ordersApi;
 
-        public RootDialog(ILuisService service)
+        public RootDialog(ILuisService service, IOrdersApi ordersApi)
             : base(service)
         {
+            this.ordersApi = ordersApi;
         }
 
         [LuisIntent("")]

@@ -1,5 +1,8 @@
 ﻿using Autofac;
+using Crm.Orders;
 using Crm.SampleBot.Dialogs;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Internals.Fibers;
 using Microsoft.Bot.Builder.Luis;
 
 namespace Crm.SampleBot.Configuration
@@ -14,10 +17,13 @@ namespace Crm.SampleBot.Configuration
             builder.Register<RootDialog>(c =>
             {
                 var settings = c.Resolve<LuisModelSettings>();
+                var ordersApi = c.Resolve<IOrdersApi>();
                 var service = new LuisService(new LuisModelAttribute(settings.ModelId, settings.SubscriptionKey));
 
-                return new RootDialog(service);
-            });
+                return new RootDialog(service, ordersApi);
+            })
+            .Keyed<RootDialog>(FiberModule.Key_DoNotSerialize)
+            .AsSelf();
 
             builder.RegisterType<OpenOrders>().AsSelf();
             builder.RegisterType<OrderStatus>().AsSelf();

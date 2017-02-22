@@ -99,6 +99,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Crm.Orders\Crm.Orders.csproj">
+      <Project>{37D35CAB-9CFD-4445-A9DB-DB69591F322C}</Project>
+      <Name>Crm.Orders</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -145,6 +145,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crm.Orders\Crm.Orders.csproj">
+      <Project>{37D35CAB-9CFD-4445-A9DB-DB69591F322C}</Project>
+      <Name>Crm.Orders</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Crm.SampleBot\Crm.SampleBot.csproj">
       <Project>{F989F035-B1E9-4017-AA51-F0FD3CDAF271}</Project>
       <Name>Crm.SampleBot</Name>

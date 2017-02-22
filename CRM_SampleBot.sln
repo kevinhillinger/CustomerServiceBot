@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crm.SampleBot.Web", "Crm.Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crm.SampleBot", "Crm.SampleBot\Crm.SampleBot.csproj", "{F989F035-B1E9-4017-AA51-F0FD3CDAF271}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crm.Orders", "Crm.Orders\Crm.Orders.csproj", "{37D35CAB-9CFD-4445-A9DB-DB69591F322C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F989F035-B1E9-4017-AA51-F0FD3CDAF271}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F989F035-B1E9-4017-AA51-F0FD3CDAF271}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F989F035-B1E9-4017-AA51-F0FD3CDAF271}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D35CAB-9CFD-4445-A9DB-DB69591F322C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D35CAB-9CFD-4445-A9DB-DB69591F322C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D35CAB-9CFD-4445-A9DB-DB69591F322C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D35CAB-9CFD-4445-A9DB-DB69591F322C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
