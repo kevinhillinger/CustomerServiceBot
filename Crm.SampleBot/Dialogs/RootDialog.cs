@@ -4,6 +4,9 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
+using Crm.SampleBot.Dialogs.Order;
+using Crm.SampleBot.Dialogs.ServiceRepresentative;
+using Crm.SampleBot.Dialogs.MoreOptions;
 
 namespace Crm.SampleBot.Dialogs
 {
@@ -12,8 +15,8 @@ namespace Crm.SampleBot.Dialogs
     {
         // Options for user to choose
         private const string OrderStatusOption = "Check Order Status";
-        private const string OpenOrdersOption = "Find Open Orders";
-        private const string RepOption = "Find Representative";
+        private const string ServiceRepresentative = "Service Representative";
+        private const string MoreOptions = "More Options";
 
         public RootDialog(ILuisService service)
             : base(service)
@@ -28,49 +31,59 @@ namespace Crm.SampleBot.Dialogs
             PromptDialog.Choice(
                 context,
                 this.OnOptionSelected,
-                new List<string>() { OrderStatusOption, OpenOrdersOption, RepOption },
+                new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
                 String.Format($"Sorry, I did not understand '{result.Query}'.. What would you like to do?"), "Not a valid option");
         }
 
-        [LuisIntent("greeting")]
+        [LuisIntent("Greeting")]
         public async Task Greeting(IDialogContext context, LuisResult result)
         {
             // go to main menu with choices - prompt to choose "What would you like to do?"
             PromptDialog.Choice(
                 context,
                 this.OnOptionSelected,
-                new List<string>() { OrderStatusOption, OpenOrdersOption, RepOption },
-                String.Format("Hello! I am a CRM bot, I can get order status by number, find all open orders by person or find a person's sales rep. What would you like to do?"), "Not a valid option");
+                new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
+                String.Format("Hello! I am Ecolab CRM bot. What would you like to do?"), "Not a valid option");
         }
 
-        [LuisIntent("getOrderStatus")]
-        public async Task GetOrderStatus(IDialogContext context, LuisResult result)
+        [LuisIntent("Order")]
+        public async Task Order(IDialogContext context, LuisResult result)
         {
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
             // Start new dialog
-            context.Call(new OrderStatus(), this.ResumeAfterOptionDialog);
+            context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
         }
 
-        [LuisIntent("getOpenOrders")]
-        public async Task GetOpenOrders(IDialogContext context, LuisResult result)
+        [LuisIntent("Order.Number")]
+        public async Task OrderNumber(IDialogContext context, LuisResult result)
         {
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
             // start new dialog
-            context.Call(new OpenOrders(), this.ResumeAfterOptionDialog);
+            context.Call(new OrderNumber(), this.ResumeAfterOptionDialog);
         }
 
-        [LuisIntent("getRep")]
-        public async Task GetRep(IDialogContext context, LuisResult result)
+        [LuisIntent("Order.Account")]
+        public async Task OrderAccount(IDialogContext context, LuisResult result)
         {
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
             
             // Start new dialog
-            context.Call(new Representative(), this.ResumeAfterOptionDialog);
+            context.Call(new OrderAccount(), this.ResumeAfterOptionDialog);
+        }
+
+        [LuisIntent("Order.Date")]
+        public async Task OrderDate(IDialogContext context, LuisResult result)
+        {
+            // store LuisResult in cotext userData
+            context.UserData.SetValue<LuisResult>("LuisResult", result);
+
+            // Start new dialog
+            context.Call(new OrderDate(), this.ResumeAfterOptionDialog);
         }
 
         private async Task MessageReceivedAsync(IDialogContext context)
@@ -81,7 +94,7 @@ namespace Crm.SampleBot.Dialogs
             PromptDialog.Choice(
                 context,
                 this.OnOptionSelected,
-                new List<string>() { OrderStatusOption, OpenOrdersOption, RepOption },
+                new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
                 String.Format("What would you like to do?"), "Not a valid option", 3);
         }
 
@@ -94,15 +107,15 @@ namespace Crm.SampleBot.Dialogs
                 switch (optionSelected)
                 {
                     case OrderStatusOption:
-                        context.Call(new OrderStatus(), this.ResumeAfterOptionDialog);
+                        context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
                         break;
 
-                    case OpenOrdersOption:
-                        context.Call(new OpenOrders(), this.ResumeAfterOptionDialog);
+                    case ServiceRepresentative:
+                        context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
                         break;
 
-                    case RepOption:
-                        context.Call(new Representative(), this.ResumeAfterOptionDialog);
+                    case MoreOptions:
+                        context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
                         break;
                 }
             }
