@@ -17,17 +17,17 @@ namespace Crm.Orders.Model
         /// Initializes a new instance of the <see cref="Order" /> class.
         /// </summary>
         /// <param name="OrderNumber">Unique identifier representing a specific order.</param>
-        /// <param name="CustomerNumber">Customer Number.</param>
+        /// <param name="AccountNumber">Customer Number.</param>
         /// <param name="OrderDate">Date of the Estimate Completion Time.</param>
         /// <param name="ShipmentDate">Date of the shipment.</param>
         /// <param name="Freight">Cost of the Freight.</param>
         /// <param name="Tax">Cost of tax.</param>
         /// <param name="Total">Cost total.</param>
         /// <param name="Subtotal">Cost of all the items.</param>
-        public Order(string OrderNumber = default(string), string CustomerNumber = default(string), DateTime? OrderDate = default(DateTime?), DateTime? ShipmentDate = default(DateTime?), float? Freight = default(float?), float? Tax = default(float?), float? Total = default(float?), float? Subtotal = default(float?))
+        public Order(string OrderNumber = default(string), string AccountNumber = default(string), DateTime? OrderDate = default(DateTime?), DateTime? ShipmentDate = default(DateTime?), float? Freight = default(float?), float? Tax = default(float?), float? Total = default(float?), float? Subtotal = default(float?))
         {
             this.OrderNumber = OrderNumber;
-            this.CustomerNumber = CustomerNumber;
+            this.AccountNumber = AccountNumber;
             this.OrderDate = OrderDate;
             this.ShipmentDate = ShipmentDate;
             this.Freight = Freight;
@@ -46,8 +46,8 @@ namespace Crm.Orders.Model
         /// Customer Number
         /// </summary>
         /// <value>Customer Number</value>
-        [DataMember(Name="customer_number", EmitDefaultValue=false)]
-        public string CustomerNumber { get; set; }
+        [DataMember(Name="account_number", EmitDefaultValue=false)]
+        public string AccountNumber { get; set; }
         /// <summary>
         /// Date of the Estimate Completion Time
         /// </summary>
@@ -94,7 +94,7 @@ namespace Crm.Orders.Model
 
             sb.Append("class Order {\n");
             sb.Append("  OrderNumber: ").Append(OrderNumber).Append("\n");
-            sb.Append("  CustomerNumber: ").Append(CustomerNumber).Append("\n");
+            sb.Append("  CustomerNumber: ").Append(AccountNumber).Append("\n");
             sb.Append("  OrderDate: ").Append(OrderDate).Append("\n");
             sb.Append("  ShipmentDate: ").Append(ShipmentDate).Append("\n");
             sb.Append("  Freight: ").Append(Freight).Append("\n");
@@ -143,9 +143,9 @@ namespace Crm.Orders.Model
                     this.OrderNumber.Equals(other.OrderNumber)
                 ) && 
                 (
-                    this.CustomerNumber == other.CustomerNumber ||
-                    this.CustomerNumber != null &&
-                    this.CustomerNumber.Equals(other.CustomerNumber)
+                    this.AccountNumber == other.AccountNumber ||
+                    this.AccountNumber != null &&
+                    this.AccountNumber.Equals(other.AccountNumber)
                 ) && 
                 (
                     this.OrderDate == other.OrderDate ||
@@ -192,8 +192,8 @@ namespace Crm.Orders.Model
                 // Suitable nullity checks etc, of course :)
                 if (this.OrderNumber != null)
                     hash = hash * 59 + this.OrderNumber.GetHashCode();
-                if (this.CustomerNumber != null)
-                    hash = hash * 59 + this.CustomerNumber.GetHashCode();
+                if (this.AccountNumber != null)
+                    hash = hash * 59 + this.AccountNumber.GetHashCode();
                 if (this.OrderDate != null)
                     hash = hash * 59 + this.OrderDate.GetHashCode();
                 if (this.ShipmentDate != null)
