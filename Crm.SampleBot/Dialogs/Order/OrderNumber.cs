@@ -73,10 +73,15 @@ namespace Crm.SampleBot.Dialogs.Order
             // call API and display results
             var attachment = await GetReceiptCard(orderNumber);
 
-            var card = context.MakeMessage();
-            card.Attachments.Add(attachment);
-
-            await context.PostAsync(card);
+            if (attachment == null) {
+                string error = $"Sorry.. I could not find that order for you.";
+                await context.PostAsync(message);
+            } else
+            {
+                var card = context.MakeMessage();
+                card.Attachments.Add(attachment);
+                await context.PostAsync(card);
+            }
 
             //call context.done to exit this dialog and go back to the root dialog
             context.Done(context);
@@ -86,26 +91,33 @@ namespace Crm.SampleBot.Dialogs.Order
         {
             var order = await ordersApi.GetAsync(orderNumber);
 
-            var receiptCard = new ReceiptCard
+            //check status of null
+            if (order != null)
             {
-                Items = new List<ReceiptItem>
+                var receiptCard = new ReceiptCard
                 {
-                    // change to order.AccountNumber
-                    new ReceiptItem("Account Number", order.CustomerNumber),
+                    Items = new List<ReceiptItem>
+                {
+                    new ReceiptItem("Account Number", order.AccountNumber),
                     new ReceiptItem("Date Ordered", order.OrderDate?.ToString()),
                     new ReceiptItem("Est. Ship Date", order.ShipmentDate?.ToString())
                 },
 
-                Title = $"Order #{order.OrderNumber}",
-                Facts = new List<Fact> {
+                    Title = $"Order #{order.OrderNumber}",
+                    Facts = new List<Fact> {
                     new Fact("Freight", order.Freight?.ToString()),
                     new Fact("Tax", order.Tax?.ToString())
-                },     
+                },
 
-                Total = order.Total.ToString()
-            };
+                    Total = order.Total.ToString()
+                };
 
-            return receiptCard.ToAttachment();
+                return receiptCard.ToAttachment();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
