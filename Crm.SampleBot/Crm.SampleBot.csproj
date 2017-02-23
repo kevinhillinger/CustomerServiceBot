@@ -91,7 +91,6 @@
     <Compile Include="Configuration\LuisModelSettings.cs" />
     <Compile Include="Dialogs\IDialogFactory.cs" />
     <Compile Include="Dialogs\MoreOptions\MoreOptionsRoot.cs" />
-    <Compile Include="Dialogs\OrderStatus.cs" />
     <Compile Include="Dialogs\Order\OrderAccount.cs" />
     <Compile Include="Dialogs\Order\OrderDate.cs" />
     <Compile Include="Dialogs\Order\OrderNumber.cs" />
