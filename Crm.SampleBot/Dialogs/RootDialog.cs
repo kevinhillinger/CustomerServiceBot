@@ -8,16 +8,31 @@ using Crm.SampleBot.Dialogs.Order;
 using Crm.SampleBot.Dialogs.ServiceRepresentative;
 using Crm.SampleBot.Dialogs.MoreOptions;
 using Crm.Orders;
+using System.Reflection;
+using System.Resources;
+using System.Globalization;
 
 namespace Crm.SampleBot.Dialogs
 {
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
+        //refer to the resource file ProjectName.Filename (minus the en-US)
+        static ResourceManager rm = new ResourceManager("Crm.SampleBot.rootDialog", Assembly.GetExecutingAssembly());
+
+        //Set the language to be used; you can change this on-demand to change the langauage across the app
+        //You will pass this everytime you request a value from the resx file
+        static CultureInfo ci = new CultureInfo("en-US");
+
         // Options for user to choose
-        private const string OrderStatusOption = "Check Order Status";
-        private const string ServiceRepresentative = "Service Representative";
-        private const string MoreOptions = "More Options";
+        private static string OrderStatusOption = rm.GetString("OrderStatusOption", ci);
+        private static string ServiceRepresentative = rm.GetString("ServiceRepresentative", ci);
+        private static string MoreOptions = rm.GetString("MoreOptions", ci);
+
+        //private const string OrderStatusOption = "Check Order Status";
+        //private const string ServiceRepresentative = "Service Representative";
+        //private const string MoreOptions = "More Options";
+
         private readonly IOrdersApi ordersApi;
         private readonly IDialogFactory dialogFactory;
 
