@@ -5,6 +5,8 @@ using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
 using Crm.SampleBot.Dialogs.Order;
+using Crm.SampleBot.Dialogs.ServiceRepresentative;
+using Crm.SampleBot.Dialogs.MoreOptions;
 using Crm.Orders;
 
 namespace Crm.SampleBot.Dialogs
@@ -12,7 +14,20 @@ namespace Crm.SampleBot.Dialogs
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
+        static ResourceManager rm = new ResourceManager("Crm.SampleBot.rootDialog", Assembly.GetExecutingAssembly());
+
+        //Set the language to be used; you can change this on-demand to change the langauage across the app
+        //You will pass this everytime you request a value from the resx file
+        static CultureInfo ci = new CultureInfo("en-US");
+
         // Options for user to choose
+        private static string OrderStatusOption = rm.GetString("OrderStatusOption", ci);
+        private static string ServiceRepresentative = rm.GetString("ServiceRepresentative", ci);
+        private static string MoreOptions = rm.GetString("MoreOptions", ci);
+
+        //private const string OrderStatusOption = "Check Order Status";
+        //private const string ServiceRepresentative = "Service Representative";
+        //private const string MoreOptions = "More Options";
         private const string OrderStatusOption = "Check Order Status";
         private const string ServiceRepresentative = "Service Representative";
         private const string MoreOptions = "More Options";
@@ -45,41 +60,52 @@ namespace Crm.SampleBot.Dialogs
             await context.PostAsync("Hi! I'd love to help you! I can help you find an order or find your customer service representative. What would you like to do?");
         }
 
-        [LuisIntent(LuisIntents.Order)]
-        public Task OrderReceived(IDialogContext context, LuisResult result)
+        [LuisIntent("Order")]
+        public async Task Order(IDialogContext context, LuisResult result)
         {
-            return ForwardToNewDialog<OrderRoot>(context, result);
+            // store LuisResult in context userData
+            context.UserData.SetValue<LuisResult>("LuisResult", result);
+
+            StartDialogWithResumeAfter<OrderRoot>(context);
         }
 
-        [LuisIntent(LuisIntents.OrderNumber)]
-        public Task OrderNumberReceived(IDialogContext context, LuisResult result)
+        [LuisIntent("Order.Number")]
+        public async Task OrderNumber(IDialogContext context, LuisResult result)
         {
-            return ForwardToNewDialog<OrderNumber>(context, result);
+            // store LuisResult in cotext userData
+            context.UserData.SetValue<LuisResult>("LuisResult", result);
+
+            StartDialogWithResumeAfter<OrderNumber>(context);
         }
 
-        [LuisIntent(LuisIntents.OrderAccount)]
-        public Task OrderAccountReceived(IDialogContext context, LuisResult result)
+        [LuisIntent("Order.Account")]
+        public async Task OrderAccount(IDialogContext context, LuisResult result)
         {
-            return ForwardToNewDialog<OrderAccount>(context, result);
+            // store LuisResult in cotext userData
+            context.UserData.SetValue<LuisResult>("LuisResult", result);
+
+            StartDialogWithResumeAfter<OrderAccount>(context);
         }
 
-        [LuisIntent(LuisIntents.OrderDate)]
-        public Task OrderDate(IDialogContext context, LuisResult result)
+        [LuisIntent("Order.Date")]
+        public async Task OrderDate(IDialogContext context, LuisResult result)
         {
-            return ForwardToNewDialog<OrderDate>(context, result);
+            // store LuisResult in cotext userData
+            context.UserData.SetValue<LuisResult>("LuisResult", result);
+
+            StartDialogWithResumeAfter<OrderDate>(context);
         }
 
-        private Task MessageReceivedAsync(IDialogContext context)
+        private async Task MessageReceivedAsync(IDialogContext context)
         {
-            ClearLuisEntities(context);
+            // clear the LUIS entities from userData
+            context.UserData.RemoveValue("LuisResult");
 
             PromptDialog.Choice(
                 context,
                 this.OnOptionSelected,
                 new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
-                string.Format("What would you like to do?"), "Not a valid option", 3);
-
-            return Task.CompletedTask;
+                String.Format("What would you like to do?"), "Not a valid option", 3);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -87,7 +113,7 @@ namespace Crm.SampleBot.Dialogs
             try
             {
                 var options = await result; //check option selected in the future to fork to another dialog
-                StartNewDialog<OrderRoot>(context);
+                StartDialogWithResumeAfter<OrderRoot>(context);
             }
             catch (TooManyAttemptsException)
             {
@@ -112,20 +138,7 @@ namespace Crm.SampleBot.Dialogs
             }
         }
 
-        private void ClearLuisEntities(IDialogContext context)
-        {
-            context.UserData.RemoveValue("LuisResult");
-        }
-
-        private Task ForwardToNewDialog<TDialog>(IDialogContext context, LuisResult result) where TDialog : IDialog<object>
-        {
-            context.UserData.SetValue("LuisResult", result);
-            context.Call(dialogFactory.Create<TDialog>(), this.ResumeAfterOptionDialog);
-
-            return Task.CompletedTask;
-        }
-
-        private void StartNewDialog<TDialog>(IDialogContext context) where TDialog : IDialog<object>
+        private void StartDialogWithResumeAfter<TDialog>(IDialogContext context) where TDialog : IDialog<object>
         {
             context.Call(dialogFactory.Create<TDialog>(), this.ResumeAfterOptionDialog);
         }
