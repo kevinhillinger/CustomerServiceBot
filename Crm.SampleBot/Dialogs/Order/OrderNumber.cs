@@ -27,7 +27,7 @@ namespace Crm.SampleBot.Dialogs.Order
             context.UserData.TryGetValue<LuisResult>("LuisResult", out result);
 
             // check if LuisResult contains an entity
-            if ((result != null) && (result.Entities.Count > 0))
+            if ((result != null) && (result.Entities.Count > 0) && result.Entities.FirstOrDefault(item => item.Type == "builtin.number") != null)
             {
                 // store orderNumber
                 
