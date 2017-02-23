@@ -67,15 +67,15 @@ namespace Crm.SampleBot.Dialogs.Order
             var orderNumber = "";
             context.UserData.TryGetValue<string>("orderNumber", out orderNumber);
             
-            string message = $"Let me check on that for you..";
+            string message = $"Let me check on that for you.";
             await context.PostAsync(message);
 
             // call API and display results
             var attachment = await GetReceiptCard(orderNumber);
 
             if (attachment == null) {
-                string error = $"Sorry.. I could not find that order for you.";
-                await context.PostAsync(message);
+                string error = $"Sorry. I could not find that order for you.";
+                await context.PostAsync(error);
             } else
             {
                 var card = context.MakeMessage();
