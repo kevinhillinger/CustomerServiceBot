@@ -20,7 +20,7 @@ namespace Crm.SampleBot.Dialogs
         //You will pass this everytime you request a value from the resx file
         static CultureInfo ciEnglish = new CultureInfo("en-US");
         
-        // Options for user to choose
+        // Options for user to choose, with the values coming from the resource file
         private static string OrderStatusOption = rmRootDialog.GetString("OrderStatusOption", ciEnglish);
         private static string ServiceRepresentative = rmRootDialog.GetString("ServiceRepresentative", ciEnglish);
         private static string MoreOptions = rmRootDialog.GetString("MoreOptions", ciEnglish);

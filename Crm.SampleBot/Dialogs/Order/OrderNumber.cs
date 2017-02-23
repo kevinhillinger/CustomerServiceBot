@@ -100,7 +100,7 @@ namespace Crm.SampleBot.Dialogs.Order
                 {
                     new ReceiptItem("Account Number", order.AccountNumber),
                     new ReceiptItem("Date Ordered", order.OrderDate?.ToString()),
-                    new ReceiptItem("Est. Ship Date", order.ShipmentDate?.ToString())
+                    new ReceiptItem("Est. Ship Date", order.ActualShipmentDate?.ToString())
                 },
 
                     Title = $"Order #{order.OrderNumber}",

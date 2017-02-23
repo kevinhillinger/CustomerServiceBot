@@ -19,21 +19,32 @@ namespace Crm.Orders.Model
         /// <param name="OrderNumber">Unique identifier representing a specific order.</param>
         /// <param name="AccountNumber">Customer Number.</param>
         /// <param name="OrderDate">Date of the Estimate Completion Time.</param>
-        /// <param name="ShipmentDate">Date of the shipment.</param>
+        /// <param name="ActualShipmentDate">Date of the shipment.</param>
         /// <param name="Freight">Cost of the Freight.</param>
         /// <param name="Tax">Cost of tax.</param>
         /// <param name="Total">Cost total.</param>
         /// <param name="Subtotal">Cost of all the items.</param>
-        public Order(string OrderNumber = default(string), string AccountNumber = default(string), DateTime? OrderDate = default(DateTime?), DateTime? ShipmentDate = default(DateTime?), float? Freight = default(float?), float? Tax = default(float?), float? Total = default(float?), float? Subtotal = default(float?))
+        public Order(string OrderNumber = default(string), 
+            string AccountNumber = default(string), 
+            DateTime? OrderDate = default(DateTime?), 
+            DateTime? ActualShipmentDate = default(DateTime?),
+            DateTime? EstimatedShipmentDate = default(DateTime?),
+            float? Freight = default(float?), 
+            float? Tax = default(float?), 
+            float? Total = default(float?), 
+            float? Subtotal = default(float?),
+            string Status = default(string))
         {
             this.OrderNumber = OrderNumber;
             this.AccountNumber = AccountNumber;
             this.OrderDate = OrderDate;
-            this.ShipmentDate = ShipmentDate;
+            this.ActualShipmentDate = ActualShipmentDate;
+            this.EstimatedShipmentDate = EstimatedShipmentDate;
             this.Freight = Freight;
             this.Tax = Tax;
             this.Total = Total;
             this.Subtotal = Subtotal;
+            this.Status = Status;
         }
         
         /// <summary>
@@ -54,12 +65,21 @@ namespace Crm.Orders.Model
         /// <value>Date of the Estimate Completion Time</value>
         [DataMember(Name="order_date", EmitDefaultValue=false)]
         public DateTime? OrderDate { get; set; }
+
         /// <summary>
         /// Date of the shipment
         /// </summary>
         /// <value>Date of the shipment</value>
-        [DataMember(Name="shipment_date", EmitDefaultValue=false)]
-        public DateTime? ShipmentDate { get; set; }
+        [DataMember(Name="actual_shipment_date", EmitDefaultValue=false)]
+        public DateTime? ActualShipmentDate { get; set; }
+
+        /// <summary>
+        /// Date of the shipment
+        /// </summary>
+        /// <value>Date of the shipment</value>
+        [DataMember(Name = "estimated_shipment_date", EmitDefaultValue = false)]
+        public DateTime? EstimatedShipmentDate { get; set; }
+
         /// <summary>
         /// Cost of the Freight
         /// </summary>
@@ -78,12 +98,17 @@ namespace Crm.Orders.Model
         /// <value>Cost total</value>
         [DataMember(Name="total", EmitDefaultValue=false)]
         public float? Total { get; set; }
+
         /// <summary>
         /// Cost of all the items
         /// </summary>
         /// <value>Cost of all the items</value>
         [DataMember(Name="subtotal", EmitDefaultValue=false)]
         public float? Subtotal { get; set; }
+
+        [DataMember(Name = "status", EmitDefaultValue = false)]
+        public string Status { get; set; }
+
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
@@ -96,7 +121,7 @@ namespace Crm.Orders.Model
             sb.Append("  OrderNumber: ").Append(OrderNumber).Append("\n");
             sb.Append("  CustomerNumber: ").Append(AccountNumber).Append("\n");
             sb.Append("  OrderDate: ").Append(OrderDate).Append("\n");
-            sb.Append("  ShipmentDate: ").Append(ShipmentDate).Append("\n");
+            sb.Append("  ShipmentDate: ").Append(ActualShipmentDate).Append("\n");
             sb.Append("  Freight: ").Append(Freight).Append("\n");
             sb.Append("  Tax: ").Append(Tax).Append("\n");
             sb.Append("  Total: ").Append(Total).Append("\n");
@@ -153,9 +178,9 @@ namespace Crm.Orders.Model
                     this.OrderDate.Equals(other.OrderDate)
                 ) && 
                 (
-                    this.ShipmentDate == other.ShipmentDate ||
-                    this.ShipmentDate != null &&
-                    this.ShipmentDate.Equals(other.ShipmentDate)
+                    this.ActualShipmentDate == other.ActualShipmentDate ||
+                    this.ActualShipmentDate != null &&
+                    this.ActualShipmentDate.Equals(other.ActualShipmentDate)
                 ) && 
                 (
                     this.Freight == other.Freight ||
@@ -196,8 +221,8 @@ namespace Crm.Orders.Model
                     hash = hash * 59 + this.AccountNumber.GetHashCode();
                 if (this.OrderDate != null)
                     hash = hash * 59 + this.OrderDate.GetHashCode();
-                if (this.ShipmentDate != null)
-                    hash = hash * 59 + this.ShipmentDate.GetHashCode();
+                if (this.ActualShipmentDate != null)
+                    hash = hash * 59 + this.ActualShipmentDate.GetHashCode();
                 if (this.Freight != null)
                     hash = hash * 59 + this.Freight.GetHashCode();
                 if (this.Tax != null)
