@@ -29,15 +29,15 @@ namespace Crm.SampleBot.Dialogs.Order
             if (context.UserData.TryGetValue("LuisResult", out result))
             {
                 var orderDate = GetValue(result);
-                context.UserData.SetValue("orderDate", orderDate);
 
                 if (orderDate != null && IsDate(orderDate))
                 {
+                    context.UserData.SetValue("orderDate", orderDate);
                     var orders = await GetOrders(orderDate);
 
                     if (orders.Count == 0)
                     {
-                        await context.PostAsync("Sorry..I could not find any orders for that date");
+                        await context.PostAsync("Sorry. I could not find that order for you.");
                     }
                     else
                     {
@@ -52,10 +52,8 @@ namespace Crm.SampleBot.Dialogs.Order
             }
 
             // no value, so get one
-            await context.PostAsync("What order number would you like to search?");
+            await context.PostAsync("What date would you like to search? (YYYY-MM-DD)");
             context.Wait(RequestOrderDateAsync);
-
-            context.Done(context);
         }
 
         public async Task RequestOrderDateAsync(IDialogContext context, IAwaitable<IMessageActivity> messageActivity)
@@ -63,12 +61,12 @@ namespace Crm.SampleBot.Dialogs.Order
             var result = await messageActivity;
             var orderDate = result.Text;
 
-            if (!IsDate(orderDate))
-            {
-                //TODO: do something about bad input
-                await context.PostAsync("Invalid date...");
-                return;
-            }
+            //if (!IsDate(orderDate))
+            //{
+            //    //TODO: do something about bad input
+            //    await context.PostAsync("Invalid date...");
+            //    return;
+            //}
 
             context.UserData.SetValue("orderDate", orderDate);
 
@@ -82,6 +80,8 @@ namespace Crm.SampleBot.Dialogs.Order
             else
             {
                 var card = context.MakeMessage();
+                card.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+
                 card.Attachments = orders.Select(o => ToAttachment(o)).ToList();
 
                 await context.PostAsync(card);
@@ -109,25 +109,19 @@ namespace Crm.SampleBot.Dialogs.Order
 
         private static Attachment ToAttachment(Orders.Model.Order order)
         {
-            var receiptCard = new ReceiptCard
+            var heroCard = new HeroCard
             {
-                Items = new List<ReceiptItem>
-                {
-                    new ReceiptItem("Account Number", order.AccountNumber),
-                    new ReceiptItem("Date Ordered", order.OrderDate?.ToString()),
-                    new ReceiptItem("Est. Ship Date", order.ShipmentDate?.ToString())
-                },
-
-                Title = $"Order #{order.OrderNumber}",
-                Facts = new List<Fact> {
-                    new Fact("Freight", order.Freight?.ToString()),
-                    new Fact("Tax", order.Tax?.ToString())
-                },
-
-                Total = order.Total.ToString()
+                Title = $"Order #" + order.OrderNumber,
+                Text = $"Account Number: {order.AccountNumber}, Order Date: {order.OrderDate}, Total: {order.Total}"
+                //        //$" {order.OrderDate}"
+                //        //$" {order.Subtotal}"
+                //        //$" {order.Freight}"
+                //        //$" {order.Tax}"
+                //        //$" {order.Total}"
             };
 
-            return receiptCard.ToAttachment();
+            return heroCard.ToAttachment();
+
         }
 
         private static bool IsDate(string value)
