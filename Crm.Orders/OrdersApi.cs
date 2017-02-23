@@ -15,6 +15,12 @@ namespace Crm.Orders
     [Serializable]
     class OrdersApi : IOrdersApi
     {
+        /// <summary>
+        /// Gets or sets the configuration object
+        /// </summary>
+        /// <value>An instance of the Configuration</value>
+        public ApiConfiguration Configuration { get; set; }
+
         private ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
@@ -33,21 +39,7 @@ namespace Crm.Orders
                 this.Configuration.ApiClient.Configuration = this.Configuration;
             }
         }
-
-        /// <summary>
-        /// Gets the base path of the API client.
-        /// </summary>
-        /// <value>The base path</value>
-        public String GetBasePath()
-        {
-            return this.Configuration.ApiClient.RestClient.BaseUrl.ToString();
-        }
-
-        /// <summary>
-        /// Gets or sets the configuration object
-        /// </summary>
-        /// <value>An instance of the Configuration</value>
-        public ApiConfiguration Configuration {get; set;}
+        
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
@@ -70,7 +62,7 @@ namespace Crm.Orders
         /// </summary>
         /// <returns>Dictionary of HTTP header</returns>
         [Obsolete("DefaultHeader is deprecated, please use Configuration.DefaultHeader instead.")]
-        public Dictionary<String, String> DefaultHeader()
+        public Dictionary<string, string> DefaultHeader()
         {
             return this.Configuration.DefaultHeader;
         }
@@ -87,44 +79,43 @@ namespace Crm.Orders
             this.Configuration.AddDefaultHeader(key, value);
         }
 
-        public async Task<List<Order>> GetAsync(string customer = null, string orderdate = null, string salerep = null)
+        public async Task<List<Order>> GetAsync(QueryOptions queryOptions)
         {
-             ApiResponse<List<Order>> localVarResponse = await OrdersGetAsyncWithHttpInfo(customer, orderdate, salerep);
+            var localVarResponse = await OrdersGetAsyncWithHttpInfo(queryOptions.AccountNumber, queryOptions.OrderDate);
              return localVarResponse.Data;
 
         }
 
-        private async Task<ApiResponse<List<Order>>> OrdersGetAsyncWithHttpInfo (string customer = null, string orderdate = null, string salerep = null)
+        private async Task<ApiResponse<List<Order>>> OrdersGetAsyncWithHttpInfo(string accountNumber = null, string orderDate = null)
         {
 
             var localVarPath = "/orders";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new Dictionary<String, String>();
-            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            var localVarPathParams = new Dictionary<string, string>();
+            var localVarQueryParams = new Dictionary<string, string>();
+            var localVarHeaderParams = new Dictionary<string, string>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<string, string>();
+            var localVarFileParams = new Dictionary<string, FileParameter>();
+
+            object localVarPostBody = null;
 
             // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            string[] localVarHttpContentTypes = new string[] {
             };
-            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+            string localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            string[] localVarHttpHeaderAccepts = new string[] {
                 "application/json"
             };
-            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            string localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
             // set "format" to json by default
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
-            if (customer != null) localVarQueryParams.Add("customer", Configuration.ApiClient.ParameterToString(customer)); // query parameter
-            if (orderdate != null) localVarQueryParams.Add("orderdate", Configuration.ApiClient.ParameterToString(orderdate)); // query parameter
-            if (salerep != null) localVarQueryParams.Add("salerep", Configuration.ApiClient.ParameterToString(salerep)); // query parameter
-
+            if (accountNumber != null) localVarQueryParams.Add("account", Configuration.ApiClient.ParameterToString(accountNumber)); // query parameter
+            if (orderDate != null) localVarQueryParams.Add("orderdate", Configuration.ApiClient.ParameterToString(orderDate)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
@@ -135,7 +126,7 @@ namespace Crm.Orders
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("OrdersGet", localVarResponse);
+                Exception exception = ExceptionFactory("GetAsync", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -145,7 +136,7 @@ namespace Crm.Orders
             
         }
 
-        public async Task<Order> GetAsync(double? orderNumber)
+        public async Task<Order> GetAsync(string orderNumber)
         {
              ApiResponse<Order> localVarResponse = await OrdersOrderNumberGetAsyncWithHttpInfo(orderNumber);
              return localVarResponse.Data;
@@ -158,30 +149,30 @@ namespace Crm.Orders
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="orderNumber">The order number</param>
         /// <returns>Task of ApiResponse (Order)</returns>
-        private async Task<ApiResponse<Order>> OrdersOrderNumberGetAsyncWithHttpInfo (double? orderNumber)
+        private async Task<ApiResponse<Order>> OrdersOrderNumberGetAsyncWithHttpInfo (string orderNumber)
         {
             // verify the required parameter 'orderNumber' is set
             if (orderNumber == null)
                 throw new ApiException(400, "Missing required parameter 'orderNumber' when calling OrdersApi->OrdersOrderNumberGet");
 
             var localVarPath = "/orders/{orderNumber}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new Dictionary<String, String>();
-            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
+            var localVarPathParams = new Dictionary<string, string>();
+            var localVarQueryParams = new Dictionary<string, string>();
+            var localVarHeaderParams = new Dictionary<string, string>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<string, string>();
+            var localVarFileParams = new Dictionary<string, FileParameter>();
             Object localVarPostBody = null;
 
             // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            string[] localVarHttpContentTypes = new string[] {
             };
-            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+            string localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            string[] localVarHttpHeaderAccepts = new string[] {
                 "application/json"
             };
-            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            string localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
@@ -200,7 +191,7 @@ namespace Crm.Orders
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("OrdersOrderNumberGet", localVarResponse);
+                Exception exception = ExceptionFactory("GetAsync", localVarResponse);
                 if (exception != null) throw exception;
             }
 

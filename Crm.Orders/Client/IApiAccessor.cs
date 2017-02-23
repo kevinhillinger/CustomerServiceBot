@@ -27,12 +27,6 @@ namespace Crm.Orders.Client
         /// </summary>
         /// <value>An instance of the Configuration</value>
         ApiConfiguration Configuration {get; set;}
-
-        /// <summary>
-        /// Gets the base path of the API client.
-        /// </summary>
-        /// <value>The base path</value>
-        String GetBasePath();
         
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
