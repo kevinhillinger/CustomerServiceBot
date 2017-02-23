@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Crm.SampleBot.Dialogs
+﻿namespace Crm.SampleBot.Dialogs
 {
     /// <summary>
     /// The keys/names of each Luis intent
