@@ -33,7 +33,8 @@ namespace Crm.SampleBot.Dialogs.Order
             if ((result != null) && (result.Entities.Count > 0))
             {
                 // store orderNumber
-                var orderNumber = result.Entities[0].Entity;
+                
+                var orderNumber = result.Entities.First(item => item.Type == "builtin.number").Entity;
                 context.UserData.SetValue<string>("orderNumber", orderNumber);
 
                 // call API and display results
