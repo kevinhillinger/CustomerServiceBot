@@ -66,8 +66,7 @@ namespace Crm.SampleBot.Dialogs
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
-            // start new dialog
-            context.Call(new OrderNumber(), this.ResumeAfterOptionDialog);
+            StartDialog<OrderNumber>(context);
         }
 
         [LuisIntent("Order.Account")]
@@ -75,9 +74,8 @@ namespace Crm.SampleBot.Dialogs
         {
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
-            
-            // Start new dialog
-            context.Call(new OrderAccount(), this.ResumeAfterOptionDialog);
+
+            StartDialog<OrderAccount>(context);
         }
 
         [LuisIntent("Order.Date")]
@@ -86,8 +84,7 @@ namespace Crm.SampleBot.Dialogs
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
-            // Start new dialog
-            context.Call(new OrderDate(), this.ResumeAfterOptionDialog);
+            StartDialog<OrderDate>(context);
         }
 
         private async Task MessageReceivedAsync(IDialogContext context)
@@ -111,15 +108,15 @@ namespace Crm.SampleBot.Dialogs
                 switch (optionSelected)
                 {
                     case OrderStatusOption:
-                        context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
+                        context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
                         break;
 
                     case ServiceRepresentative:
-                        context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
+                        context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
                         break;
 
                     case MoreOptions:
-                        context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
+                        context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
                         break;
                 }
             }
@@ -149,9 +146,9 @@ namespace Crm.SampleBot.Dialogs
             }
         }
 
-        private void StartDialog<TDialog>(IDialogContext context)
+        private void StartDialog<TDialog>(IDialogContext context) where TDialog : IDialog<object>
         {
-            context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
+            context.Call(dialogFactory.Create<TDialog>(), this.ResumeAfterOptionDialog);
         }
     }
 }

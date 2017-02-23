@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Crm.Orders.Client;
+using Microsoft.Bot.Builder.Internals.Fibers;
 
 namespace Crm.Orders.Configuration
 {
@@ -9,6 +10,7 @@ namespace Crm.Orders.Configuration
         {
             builder.RegisterType<OrdersApi>()
                 .UsingConstructor(typeof(ApiConfiguration))
+                .Keyed<IOrdersApi>(FiberModule.Key_DoNotSerialize)
                 .As<IOrdersApi>();
         }
     }

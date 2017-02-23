@@ -1,4 +1,5 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using Crm.Orders;
+using Microsoft.Bot.Builder.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,13 @@ namespace Crm.SampleBot.Dialogs.Order
     [Serializable]
     class OrderAccount : IDialog<object>
     {
+        private readonly IOrdersApi ordersApi;
+
+        public OrderAccount(IOrdersApi ordersApi)
+        {
+            this.ordersApi = ordersApi;
+        }
+
         public async Task StartAsync(IDialogContext context)
         {
             string message = $"Inside OrderAccount";

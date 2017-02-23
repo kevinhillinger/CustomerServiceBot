@@ -14,6 +14,12 @@ namespace Crm.SampleBot.Dialogs.Order
         private const string OrderNumber = "Search by Number";
         private const string OrderAccount = "Search by Account";
         private const string OrderDate = "Search by Date";
+        private readonly IDialogFactory dialogFactory;
+
+        public OrderRoot(IDialogFactory dialogFactory)
+        {
+            this.dialogFactory = dialogFactory;
+        }
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -33,15 +39,15 @@ namespace Crm.SampleBot.Dialogs.Order
                 switch (optionSelected)
                 {
                     case OrderNumber:
-                        context.Call(new OrderNumber(), this.ResumeAfterOptionDialog);
+                        context.Call(dialogFactory.Create<OrderNumber>(), this.ResumeAfterOptionDialog);
                         break;
 
                     case OrderAccount:
-                        context.Call(new OrderAccount(), this.ResumeAfterOptionDialog);
+                        context.Call(dialogFactory.Create<OrderAccount>(), this.ResumeAfterOptionDialog);
                         break;
 
                     case OrderDate:
-                        context.Call(new OrderDate(), this.ResumeAfterOptionDialog);
+                        context.Call(dialogFactory.Create<OrderDate>(), this.ResumeAfterOptionDialog);
                         break;
                 }
             }
