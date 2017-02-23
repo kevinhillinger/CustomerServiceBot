@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Crm.SampleBot.Dialogs.Order;
 using Crm.SampleBot.Dialogs.ServiceRepresentative;
 using Crm.SampleBot.Dialogs.MoreOptions;
+using Crm.Orders;
 
 namespace Crm.SampleBot.Dialogs
 {
@@ -17,10 +18,14 @@ namespace Crm.SampleBot.Dialogs
         private const string OrderStatusOption = "Check Order Status";
         private const string ServiceRepresentative = "Service Representative";
         private const string MoreOptions = "More Options";
+        private readonly IOrdersApi ordersApi;
+        private readonly IDialogFactory dialogFactory;
 
-        public RootDialog(ILuisService service)
+        public RootDialog(ILuisService service, IOrdersApi ordersApi, IDialogFactory dialogFactory)
             : base(service)
         {
+            this.ordersApi = ordersApi;
+            this.dialogFactory = dialogFactory;
         }
 
         [LuisIntent("")]
@@ -48,8 +53,7 @@ namespace Crm.SampleBot.Dialogs
             // store LuisResult in context userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
-            // Start new dialog
-            context.Call(new OrderRoot(), this.ResumeAfterOptionDialog);
+            StartDialog<OrderRoot>(context);
         }
 
         [LuisIntent("Order.Number")]
@@ -139,6 +143,11 @@ namespace Crm.SampleBot.Dialogs
             {
                 await this.MessageReceivedAsync(context);
             }
+        }
+
+        private void StartDialog<TDialog>(IDialogContext context)
+        {
+            context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
         }
     }
 }

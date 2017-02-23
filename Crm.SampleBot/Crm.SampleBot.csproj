@@ -89,14 +89,13 @@
   <ItemGroup>
     <Compile Include="Configuration\BotModule.cs" />
     <Compile Include="Configuration\LuisModelSettings.cs" />
+    <Compile Include="Dialogs\IDialogFactory.cs" />
     <Compile Include="Dialogs\MoreOptions\MoreOptionsRoot.cs" />
-    <Compile Include="Dialogs\OpenOrders.cs" />
     <Compile Include="Dialogs\OrderStatus.cs" />
     <Compile Include="Dialogs\Order\OrderAccount.cs" />
     <Compile Include="Dialogs\Order\OrderDate.cs" />
     <Compile Include="Dialogs\Order\OrderNumber.cs" />
     <Compile Include="Dialogs\Order\OrderRoot.cs" />
-    <Compile Include="Dialogs\Representative.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="Dialogs\DialogFactory.cs" />
     <Compile Include="Dialogs\ServiceRepresentative\ServiceRepresentativeRoot.cs" />
@@ -106,7 +105,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Crm.Orders\Crm.Orders.csproj">
+      <Project>{37D35CAB-9CFD-4445-A9DB-DB69591F322C}</Project>
+      <Name>Crm.Orders</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

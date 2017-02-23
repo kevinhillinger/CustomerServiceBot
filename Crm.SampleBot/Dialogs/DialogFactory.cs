@@ -4,7 +4,7 @@ using System;
 
 namespace Crm.SampleBot.Dialogs
 {
-    public sealed class DialogFactory
+    sealed class DialogFactory : IDialogFactory
     {
         private IComponentContext componentContext;
 

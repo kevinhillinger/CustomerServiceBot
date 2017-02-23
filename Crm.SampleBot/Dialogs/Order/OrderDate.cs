@@ -1,4 +1,5 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Internals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace Crm.SampleBot.Dialogs.Order
         {
             string message = $"Inside OrderDate";
             await context.PostAsync(message);
+
+            //call context.done to exit this dialog and go back to the root dialog
+            context.Done(context);
         }
     }
 }

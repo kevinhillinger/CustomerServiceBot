@@ -14,9 +14,9 @@ namespace Crm.SampleBot.Web
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        private DialogFactory dialogFactory;
+        private IDialogFactory dialogFactory;
 
-        public MessagesController(DialogFactory dialogFactory)
+        public MessagesController(IDialogFactory dialogFactory)
         {
             this.dialogFactory = dialogFactory;
         }

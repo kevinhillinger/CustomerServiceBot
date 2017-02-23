@@ -1,5 +1,9 @@
 ﻿using Autofac;
+using Crm.Orders;
 using Crm.SampleBot.Dialogs;
+using Crm.SampleBot.Dialogs.Order;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Internals.Fibers;
 using Microsoft.Bot.Builder.Luis;
 
 namespace Crm.SampleBot.Configuration
@@ -11,19 +15,24 @@ namespace Crm.SampleBot.Configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register<RootDialog>(c =>
-            {
+            builder.RegisterType<DialogFactory>()
+                .Keyed<IDialogFactory>(FiberModule.Key_DoNotSerialize)
+                .As<IDialogFactory>();
+
+            builder.Register<ILuisService>(c => {
                 var settings = c.Resolve<LuisModelSettings>();
                 var service = new LuisService(new LuisModelAttribute(settings.ModelId, settings.SubscriptionKey));
 
-                return new RootDialog(service);
+                return service;
             });
 
-            builder.RegisterType<OpenOrders>().AsSelf();
-            builder.RegisterType<OrderStatus>().AsSelf();
-            builder.RegisterType<Representative>().AsSelf();
+            builder.RegisterType<RootDialog>()
+            .Keyed<RootDialog>(FiberModule.Key_DoNotSerialize)
+            .AsSelf();
 
-            builder.RegisterType<DialogFactory>().AsSelf();
+            builder.RegisterType<OrderRoot>().AsSelf();
+            builder.RegisterType<OrderStatus>().AsSelf();
+            
 
             base.Load(builder);
         }
