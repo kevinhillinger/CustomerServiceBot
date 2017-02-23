@@ -26,51 +26,13 @@ namespace Crm.Orders.Client
         };
 
         /// <summary>
-        /// Allows for extending request processing for <see cref="ApiClient"/> generated code.
-        /// </summary>
-        /// <param name="request">The RestSharp request object</param>
-        partial void InterceptRequest(IRestRequest request);
-
-        /// <summary>
-        /// Allows for extending response processing for <see cref="ApiClient"/> generated code.
-        /// </summary>
-        /// <param name="request">The RestSharp request object</param>
-        /// <param name="response">The RestSharp response object</param>
-        partial void InterceptResponse(IRestRequest request, IRestResponse response);
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiClient" /> class
-        /// with default configuration and base path (https://ecolab-bot-api.azurewebsites.net/).
-        /// </summary>
-        public ApiClient()
-        {
-            Configuration = ApiConfiguration.Default;
-            RestClient = new RestClient("https://ecolab-bot-api.azurewebsites.net/");
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiClient" /> class
-        /// with default base path (https://ecolab-bot-api.azurewebsites.net/).
-        /// </summary>
-        /// <param name="config">An instance of Configuration.</param>
-        public ApiClient(ApiConfiguration config = null)
-        {
-            if (config == null)
-                Configuration = ApiConfiguration.Default;
-            else
-                Configuration = config;
-
-            RestClient = new RestClient("https://ecolab-bot-api.azurewebsites.net/");
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ApiClient" /> class
         /// with default configuration.
         /// </summary>
         /// <param name="basePath">The base path.</param>
-        public ApiClient(String basePath = "https://ecolab-bot-api.azurewebsites.net/")
+        public ApiClient(string basePath = "https://ecolab-bot-api.azurewebsites.net/")
         {
-           if (String.IsNullOrEmpty(basePath))
+           if (string.IsNullOrEmpty(basePath))
                 throw new ArgumentException("basePath cannot be empty");
 
             RestClient = new RestClient(basePath);
@@ -98,10 +60,10 @@ namespace Crm.Orders.Client
 
         // Creates and sets up a RestRequest prior to a call.
         private RestRequest PrepareRequest(
-            String path, RestSharp.Method method, Dictionary<String, String> queryParams, Object postBody,
-            Dictionary<String, String> headerParams, Dictionary<String, String> formParams,
-            Dictionary<String, FileParameter> fileParams, Dictionary<String, String> pathParams,
-            String contentType)
+            string path, RestSharp.Method method, Dictionary<string, string> queryParams, Object postBody,
+            Dictionary<string, string> headerParams, Dictionary<string, string> formParams,
+            Dictionary<string, FileParameter> fileParams, Dictionary<string, string> pathParams,
+            string contentType)
         {
             var request = new RestRequest(path, method);
 
@@ -129,7 +91,7 @@ namespace Crm.Orders.Client
 
             if (postBody != null) // http body (model or byte[]) parameter
             {
-                if (postBody.GetType() == typeof(String))
+                if (postBody.GetType() == typeof(string))
                 {
                     request.AddParameter("application/json", postBody, ParameterType.RequestBody);
                 }
@@ -156,10 +118,10 @@ namespace Crm.Orders.Client
         /// <param name="contentType">Content Type of the request</param>
         /// <returns>Object</returns>
         public Object CallApi(
-            String path, RestSharp.Method method, Dictionary<String, String> queryParams, Object postBody,
-            Dictionary<String, String> headerParams, Dictionary<String, String> formParams,
-            Dictionary<String, FileParameter> fileParams, Dictionary<String, String> pathParams,
-            String contentType)
+            string path, RestSharp.Method method, Dictionary<string, string> queryParams, Object postBody,
+            Dictionary<string, string> headerParams, Dictionary<string, string> formParams,
+            Dictionary<string, FileParameter> fileParams, Dictionary<string, string> pathParams,
+            string contentType)
         {
             var request = PrepareRequest(
                 path, method, queryParams, postBody, headerParams, formParams, fileParams,
@@ -169,10 +131,8 @@ namespace Crm.Orders.Client
             RestClient.Timeout = Configuration.Timeout;
             // set user agent
             RestClient.UserAgent = Configuration.UserAgent;
-
-            InterceptRequest(request);
+            
             var response = RestClient.Execute(request);
-            InterceptResponse(request, response);
 
             return (Object) response;
         }
@@ -190,24 +150,22 @@ namespace Crm.Orders.Client
         /// <param name="contentType">Content type.</param>
         /// <returns>The Task instance.</returns>
         public async System.Threading.Tasks.Task<Object> CallApiAsync(
-            String path, RestSharp.Method method, Dictionary<String, String> queryParams, Object postBody,
-            Dictionary<String, String> headerParams, Dictionary<String, String> formParams,
-            Dictionary<String, FileParameter> fileParams, Dictionary<String, String> pathParams,
-            String contentType)
+            string path, RestSharp.Method method, Dictionary<string, string> queryParams, Object postBody,
+            Dictionary<string, string> headerParams, Dictionary<string, string> formParams,
+            Dictionary<string, FileParameter> fileParams, Dictionary<string, string> pathParams,
+            string contentType)
         {
             var request = PrepareRequest(
                 path, method, queryParams, postBody, headerParams, formParams, fileParams,
                 pathParams, contentType);
-            InterceptRequest(request);
             var response = await RestClient.ExecuteTaskAsync(request);
-            InterceptResponse(request, response);
             return (Object)response;
         }
 
         /// <summary>
         /// Escape string (url-encoded).
         /// </summary>
-        /// <param name="str">String to be escaped.</param>
+        /// <param name="str">string to be escaped.</param>
         /// <returns>Escaped string.</returns>
         public string EscapeString(string str)
         {
@@ -282,7 +240,7 @@ namespace Crm.Orders.Client
             {
                 if (headers != null)
                 {
-                    var filePath = String.IsNullOrEmpty(Configuration.TempFolderPath)
+                    var filePath = string.IsNullOrEmpty(Configuration.TempFolderPath)
                         ? Path.GetTempPath()
                         : Configuration.TempFolderPath;
                     var regex = new Regex(@"Content-Disposition=.*filename=['""]?([^'""\s]+)['""]?$");
@@ -306,7 +264,7 @@ namespace Crm.Orders.Client
                 return DateTime.Parse(response.Content,  null, System.Globalization.DateTimeStyles.RoundtripKind);
             }
 
-            if (type == typeof(String) || type.Name.StartsWith("System.Nullable")) // return primitive type
+            if (type == typeof(string) || type.Name.StartsWith("System.Nullable")) // return primitive type
             {
                 return ConvertType(response.Content, type);
             }
@@ -327,7 +285,7 @@ namespace Crm.Orders.Client
         /// </summary>
         /// <param name="obj">Object.</param>
         /// <returns>JSON string.</returns>
-        public String Serialize(object obj)
+        public string Serialize(object obj)
         {
             try
             {
@@ -346,7 +304,7 @@ namespace Crm.Orders.Client
         /// </summary>
         /// <param name="contentTypes">The Content-Type array to select from.</param>
         /// <returns>The Content-Type header to use.</returns>
-        public String SelectHeaderContentType(String[] contentTypes)
+        public string SelectHeaderContentType(string[] contentTypes)
         {
             if (contentTypes.Length == 0)
                 return null;
@@ -364,7 +322,7 @@ namespace Crm.Orders.Client
         /// </summary>
         /// <param name="accepts">The accepts array to select from.</param>
         /// <returns>The Accept header to use.</returns>
-        public String SelectHeaderAccept(String[] accepts)
+        public string SelectHeaderAccept(string[] accepts)
         {
             if (accepts.Length == 0)
                 return null;
@@ -372,13 +330,13 @@ namespace Crm.Orders.Client
             if (accepts.Contains("application/json", StringComparer.OrdinalIgnoreCase))
                 return "application/json";
 
-            return String.Join(",", accepts);
+            return string.Join(",", accepts);
         }
 
         /// <summary>
         /// Encode string in base64 format.
         /// </summary>
-        /// <param name="text">String to be encoded.</param>
+        /// <param name="text">string to be encoded.</param>
         /// <returns>Encoded string.</returns>
         public static string Base64Encode(string text)
         {
@@ -421,7 +379,7 @@ namespace Crm.Orders.Client
         /// URL encode a string
         /// Credit/Ref: https://github.com/restsharp/RestSharp/blob/master/RestSharp/Extensions/StringExtensions.cs#L50
         /// </summary>
-        /// <param name="input">String to be URL encoded</param>
+        /// <param name="input">string to be URL encoded</param>
         /// <returns>Byte array</returns>
         public static string UrlEncode(string input)
         {
