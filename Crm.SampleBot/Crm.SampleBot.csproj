@@ -90,6 +90,7 @@
     <Compile Include="Configuration\BotModule.cs" />
     <Compile Include="Configuration\LuisModelSettings.cs" />
     <Compile Include="Dialogs\IDialogFactory.cs" />
+    <Compile Include="Dialogs\LuisIntents.cs" />
     <Compile Include="Dialogs\MoreOptions\MoreOptionsRoot.cs" />
     <Compile Include="Dialogs\Order\OrderAccount.cs" />
     <Compile Include="Dialogs\Order\OrderDate.cs" />
