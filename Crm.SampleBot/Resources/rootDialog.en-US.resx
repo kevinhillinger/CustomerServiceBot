@@ -117,13 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DontUnderstand" xml:space="preserve">
+    <value>Sorry, I don't understand</value>
+  </data>
+  <data name="FailedWithMessage" xml:space="preserve">
+    <value>Failed with message</value>
+  </data>
+  <data name="Greeting" xml:space="preserve">
+    <value>Hi! I'd love to help you! I can help you find an order or find your customer service representative. What would you like to do?</value>
+  </data>
   <data name="MoreOptions" xml:space="preserve">
     <value>More Options</value>
+  </data>
+  <data name="NotValid" xml:space="preserve">
+    <value>Sorry, that is not a valid option. :(</value>
   </data>
   <data name="OrderStatusOption" xml:space="preserve">
     <value>Check Order Status</value>
   </data>
   <data name="ServiceRepresentative" xml:space="preserve">
     <value>Service Representative</value>
+  </data>
+  <data name="TooManyAttempts" xml:space="preserve">
+    <value>Ooops! Too many attempts :( You can start again!</value>
+  </data>
+  <data name="WhatElse" xml:space="preserve">
+    <value>How else can I help you? I can you find an order or find your customer service representative. What would you like to do?</value>
+  </data>
+  <data name="WhatToDo" xml:space="preserve">
+    <value>What would you like to do?</value>
   </data>
 </root>

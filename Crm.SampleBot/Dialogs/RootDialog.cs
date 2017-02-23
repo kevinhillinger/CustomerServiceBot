@@ -43,7 +43,7 @@ namespace Crm.SampleBot.Dialogs
                 context,
                 this.OnOptionSelected,
                 new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
-                String.Format($"Sorry, I did not understand '{result.Query}'.. What would you like to do?"), "Not a valid option");
+                String.Format(rm.GetString("DontUnderstand", ci) + " '" + result.Query + "'..." + rm.GetString("WhatToDo", ci)), rm.GetString("NotValid", ci));
 
             return Task.CompletedTask;
         }
@@ -52,7 +52,7 @@ namespace Crm.SampleBot.Dialogs
         public async Task GreetingReceivedAsync(IDialogContext context, LuisResult result)
         {
             // go to main menu with choices - prompt to choose "What would you like to do?"
-            await context.PostAsync("Hi! I'd love to help you! I can help you find an order or find your customer service representative. What would you like to do?");
+            await context.PostAsync(rm.GetString("Greeting", ci));
         }
 
         [LuisIntent("Order")]
@@ -102,7 +102,7 @@ namespace Crm.SampleBot.Dialogs
             // clear the LUIS entities from userData
             context.UserData.RemoveValue("LuisResult");
 
-            await context.PostAsync("How else can I help you? I can you find an order or find your customer service representative. What would you like to do?");
+            await context.PostAsync(rm.GetString("WhatElse", ci));
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -114,7 +114,7 @@ namespace Crm.SampleBot.Dialogs
             }
             catch (TooManyAttemptsException)
             {
-                await context.PostAsync($"Ooops! Too many attemps :( You can start again!");
+                await context.PostAsync(rm.GetString("TooManyAttempts", ci));
                 await this.MessageReceivedAsync(context);
             }
         }
@@ -127,7 +127,7 @@ namespace Crm.SampleBot.Dialogs
             }
             catch (Exception ex)
             {
-                await context.PostAsync($"Failed with message: {ex.Message}");
+                await context.PostAsync(rm.GetString("FailedWithMessage", ci) + ": " + ex.Message);
             }
             finally
             {
