@@ -53,7 +53,7 @@ namespace Crm.SampleBot.Dialogs
             // store LuisResult in context userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
-            StartDialog<OrderRoot>(context);
+            StartDialogWithResumeAfter<OrderRoot>(context);
         }
 
         [LuisIntent("Order.Number")]
@@ -62,7 +62,7 @@ namespace Crm.SampleBot.Dialogs
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
-            StartDialog<OrderNumber>(context);
+            StartDialogWithResumeAfter<OrderNumber>(context);
         }
 
         [LuisIntent("Order.Account")]
@@ -71,7 +71,7 @@ namespace Crm.SampleBot.Dialogs
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
-            StartDialog<OrderAccount>(context);
+            StartDialogWithResumeAfter<OrderAccount>(context);
         }
 
         [LuisIntent("Order.Date")]
@@ -80,7 +80,7 @@ namespace Crm.SampleBot.Dialogs
             // store LuisResult in cotext userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
-            StartDialog<OrderDate>(context);
+            StartDialogWithResumeAfter<OrderDate>(context);
         }
 
         private async Task MessageReceivedAsync(IDialogContext context)
@@ -96,29 +96,12 @@ namespace Crm.SampleBot.Dialogs
         {
             try
             {
-                //capture which option then selected
-                string optionSelected = await result;
-                switch (optionSelected)
-                {
-                    case OrderStatusOption:
-                        context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
-                        break;
-
-                    case ServiceRepresentative:
-                        context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
-                        break;
-
-                    case MoreOptions:
-                        context.Call(dialogFactory.Create<OrderRoot>(), this.ResumeAfterOptionDialog);
-                        break;
-                }
+                var options = await result; //check option selected in the future to fork to another dialog
+                StartDialogWithResumeAfter<OrderRoot>(context);
             }
-            catch (TooManyAttemptsException ex)
+            catch (TooManyAttemptsException)
             {
-                //If too many attempts we send error to user and start all over. 
                 await context.PostAsync($"Ooops! Too many attemps :( You can start again!");
-
-                //This sets us in a waiting state, after running the prompt again. 
                 await this.MessageReceivedAsync(context);
             }
         }
@@ -139,7 +122,7 @@ namespace Crm.SampleBot.Dialogs
             }
         }
 
-        private void StartDialog<TDialog>(IDialogContext context) where TDialog : IDialog<object>
+        private void StartDialogWithResumeAfter<TDialog>(IDialogContext context) where TDialog : IDialog<object>
         {
             context.Call(dialogFactory.Create<TDialog>(), this.ResumeAfterOptionDialog);
         }
