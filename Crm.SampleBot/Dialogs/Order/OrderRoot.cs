@@ -27,7 +27,7 @@ namespace Crm.SampleBot.Dialogs.Order
                 context,
                 this.OnOptionSelected,
                 new List<string>() { OrderNumber, OrderDate, OrderAccount },
-                String.Format("What would you like to do?"), "Not a valid option", 3);
+                String.Format("What would you like to do?"), "Not a valid option", 0);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -53,9 +53,6 @@ namespace Crm.SampleBot.Dialogs.Order
             }
             catch (TooManyAttemptsException ex)
             {
-                //If too many attempts we send error to user and start all over. 
-                await context.PostAsync($"Ooops! Too many attemps :( You can start again!");
-
                 //This sets us in a waiting state, after running the prompt again. 
                 await this.MessageReceivedAsync(context);
             }
