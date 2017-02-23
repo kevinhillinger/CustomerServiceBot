@@ -39,17 +39,13 @@ namespace Crm.SampleBot.Dialogs
         public async Task Greeting(IDialogContext context, LuisResult result)
         {
             // go to main menu with choices - prompt to choose "What would you like to do?"
-            PromptDialog.Choice(
-                context,
-                this.OnOptionSelected,
-                new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
-                String.Format("Hello! I am Ecolab CRM bot. What would you like to do?"), "Not a valid option");
+            await context.PostAsync("Hi! I'd love to help you! I can help you find an order or find your customer service representative. What would you like to do?");
         }
 
         [LuisIntent("Order")]
         public async Task Order(IDialogContext context, LuisResult result)
         {
-            // store LuisResult in cotext userData
+            // store LuisResult in context userData
             context.UserData.SetValue<LuisResult>("LuisResult", result);
 
             // Start new dialog
