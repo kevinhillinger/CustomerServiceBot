@@ -94,19 +94,33 @@ namespace Crm.SampleBot.Dialogs.Order
             //check status of null
             if (order != null)
             {
+                var orderStatus = "";
+                switch (order.Status)
+                {
+                    case "Open":
+                        orderStatus = "🔷 OPEN. Estimated shipment date: " + order.EstimatedShipmentDate.Value.ToString("MM/dd/yyyy");
+                        break;
+                    case "Invoiced":
+                        orderStatus = "✔ INVOICED. Shipped on: " + order.ActualShipmentDate.Value.ToString("MM/dd/yyyy");
+                        break;
+                    case "Waiting To Be Shipped":
+                    default:
+                        orderStatus = "🔄 WAITING TO BE SHIPPED on: " + order.ActualShipmentDate.Value.ToString("MM/dd/yyyy");
+                        break;
+                }
                 var receiptCard = new ReceiptCard
                 {
                     Items = new List<ReceiptItem>
                 {
-                    new ReceiptItem("Account Number", order.AccountNumber),
-                    new ReceiptItem("Date Ordered", order.OrderDate?.ToString()),
-                    new ReceiptItem("Est. Ship Date", order.ActualShipmentDate?.ToString())
+                    new ReceiptItem("Subtotal", price: order.Subtotal?.ToString()),
+                    new ReceiptItem("Freight", price:order.Freight?.ToString()),
+                    new ReceiptItem("Tax", price:order.Tax?.ToString())
                 },
 
                     Title = $"Order #{order.OrderNumber}",
                     Facts = new List<Fact> {
-                    new Fact("Freight", order.Freight?.ToString()),
-                    new Fact("Tax", order.Tax?.ToString())
+                        new Fact("Account #", order.AccountNumber.ToString()),
+                        new Fact(orderStatus)
                 },
 
                     Total = order.Total.ToString()
