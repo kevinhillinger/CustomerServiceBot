@@ -91,7 +91,7 @@ namespace Crm.SampleBot.Dialogs.Order
                 Items = new List<ReceiptItem>
                 {
                     // change to order.AccountNumber
-                    new ReceiptItem("Account Number", order.CustomerNumber),
+                    new ReceiptItem("Account Number", order.AccountNumber),
                     new ReceiptItem("Date Ordered", order.OrderDate?.ToString()),
                     new ReceiptItem("Est. Ship Date", order.ShipmentDate?.ToString())
                 },
