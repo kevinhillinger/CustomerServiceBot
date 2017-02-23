@@ -81,9 +81,15 @@ namespace Crm.Orders
 
         public async Task<List<Order>> GetAsync(QueryOptions queryOptions)
         {
-            var localVarResponse = await OrdersGetAsyncWithHttpInfo(queryOptions.AccountNumber, queryOptions.OrderDate);
-             return localVarResponse.Data;
-
+            try
+            {
+                var localVarResponse = await OrdersGetAsyncWithHttpInfo(queryOptions.AccountNumber, queryOptions.OrderDate);
+                return localVarResponse.Data;
+            }
+            catch //just for poc. catch all is NOT production code
+            {
+                return new List<Order>();
+            }
         }
 
         private async Task<ApiResponse<List<Order>>> OrdersGetAsyncWithHttpInfo(string accountNumber = null, string orderDate = null)
@@ -138,9 +144,15 @@ namespace Crm.Orders
 
         public async Task<Order> GetAsync(string orderNumber)
         {
-             ApiResponse<Order> localVarResponse = await OrdersOrderNumberGetAsyncWithHttpInfo(orderNumber);
-             return localVarResponse.Data;
-
+            try
+            {
+                ApiResponse<Order> localVarResponse = await OrdersOrderNumberGetAsyncWithHttpInfo(orderNumber);
+                return localVarResponse.Data;
+            }
+            catch
+            {
+                return null;
+            } 
         }
 
         /// <summary>
