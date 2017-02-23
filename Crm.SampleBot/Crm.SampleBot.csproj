@@ -90,6 +90,7 @@
     <Compile Include="Configuration\BotModule.cs" />
     <Compile Include="Configuration\LuisModelSettings.cs" />
     <Compile Include="Dialogs\IDialogFactory.cs" />
+    <Compile Include="Dialogs\LuisIntents.cs" />
     <Compile Include="Dialogs\MoreOptions\MoreOptionsRoot.cs" />
     <Compile Include="Dialogs\Order\OrderAccount.cs" />
     <Compile Include="Dialogs\Order\OrderDate.cs" />
@@ -109,6 +110,9 @@
       <Project>{37D35CAB-9CFD-4445-A9DB-DB69591F322C}</Project>
       <Name>Crm.Orders</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\RootDialog.en-US.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
