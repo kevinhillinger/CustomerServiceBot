@@ -97,18 +97,12 @@ namespace Crm.SampleBot.Dialogs
             return Task.CompletedTask;
         }
 
-        private Task MessageReceivedAsync(IDialogContext context)
+        private async Task MessageReceivedAsync(IDialogContext context)
         {
             // clear the LUIS entities from userData
             context.UserData.RemoveValue("LuisResult");
 
-            PromptDialog.Choice(
-                context,
-                this.OnOptionSelected,
-                new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
-                String.Format("What would you like to do?"), "Not a valid option", 3);
-
-            return Task.CompletedTask;
+            await context.PostAsync("How else can I help you? I can you find an order or find your customer service representative. What would you like to do?");
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
