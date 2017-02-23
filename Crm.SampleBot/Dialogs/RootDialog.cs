@@ -8,16 +8,12 @@ using Crm.SampleBot.Dialogs.Order;
 using Crm.SampleBot.Dialogs.ServiceRepresentative;
 using Crm.SampleBot.Dialogs.MoreOptions;
 using Crm.Orders;
-using System.Reflection;
-using System.Resources;
-using System.Globalization;
 
 namespace Crm.SampleBot.Dialogs
 {
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
-        //refer to the resource file ProjectName.Filename (minus the en-US)
         static ResourceManager rm = new ResourceManager("Crm.SampleBot.rootDialog", Assembly.GetExecutingAssembly());
 
         //Set the language to be used; you can change this on-demand to change the langauage across the app
@@ -32,7 +28,9 @@ namespace Crm.SampleBot.Dialogs
         //private const string OrderStatusOption = "Check Order Status";
         //private const string ServiceRepresentative = "Service Representative";
         //private const string MoreOptions = "More Options";
-
+        private const string OrderStatusOption = "Check Order Status";
+        private const string ServiceRepresentative = "Service Representative";
+        private const string MoreOptions = "More Options";
         private readonly IOrdersApi ordersApi;
         private readonly IDialogFactory dialogFactory;
 
@@ -103,8 +101,11 @@ namespace Crm.SampleBot.Dialogs
             // clear the LUIS entities from userData
             context.UserData.RemoveValue("LuisResult");
 
-            await context.PostAsync("How else can I help you? I can you find an order or find your customer service representative. What would you like to do?");
-
+            PromptDialog.Choice(
+                context,
+                this.OnOptionSelected,
+                new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
+                String.Format("What would you like to do?"), "Not a valid option", 3);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
