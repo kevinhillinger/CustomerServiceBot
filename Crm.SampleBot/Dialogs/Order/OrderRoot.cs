@@ -11,9 +11,9 @@ namespace Crm.SampleBot.Dialogs.Order
     class OrderRoot : IDialog<object>
     {
         // Options for user to choose
-        private const string OrderNumber = "Search by Number";
-        private const string OrderAccount = "Search by Account";
-        private const string OrderDate = "Search by Date";
+        private const string OrderNumber = "Search by Order Number";
+        private const string OrderDate = "Search by Order Date";
+        private const string OrderAccount = "Search by Account Number";
         private readonly IDialogFactory dialogFactory;
 
         public OrderRoot(IDialogFactory dialogFactory)
@@ -26,7 +26,7 @@ namespace Crm.SampleBot.Dialogs.Order
             PromptDialog.Choice(
                 context,
                 this.OnOptionSelected,
-                new List<string>() { OrderNumber, OrderAccount, OrderDate },
+                new List<string>() { OrderNumber, OrderDate, OrderAccount },
                 String.Format("What would you like to do?"), "Not a valid option", 3);
         }
 

@@ -22,9 +22,6 @@ namespace Crm.SampleBot.Dialogs.Order
 
         public async Task StartAsync(IDialogContext context)
         {
-            string message = $"Inside OrderNumber";
-            await context.PostAsync(message);
-
             // load the LuisResult from context.UserData
             LuisResult result = new LuisResult();
             context.UserData.TryGetValue<LuisResult>("LuisResult", out result);
@@ -68,21 +65,46 @@ namespace Crm.SampleBot.Dialogs.Order
             // retrieve orderNumber to be searched
             var orderNumber = "";
             context.UserData.TryGetValue<string>("orderNumber", out orderNumber);
-
-            string message = $"getOrderStatus for order #{orderNumber}";
+            
+            string message = $"Let me check on that for you..";
             await context.PostAsync(message);
 
-            // Call API with orderNumber
-            message = $"Calling API..";
-            await context.PostAsync(message);
+            // call API and display results
+            var attachment = await GetReceiptCard(orderNumber);
 
-            // Display results
-            message = $"Displaying API results..";
-            await context.PostAsync(message);
+            var card = context.MakeMessage();
+            card.Attachments.Add(attachment);
+
+            await context.PostAsync(card);
 
             //call context.done to exit this dialog and go back to the root dialog
             context.Done(context);
+        }
 
+        private async Task<Attachment> GetReceiptCard(string orderNumber)
+        {
+            var order = await ordersApi.GetAsync(orderNumber);
+
+            var receiptCard = new ReceiptCard
+            {
+                Items = new List<ReceiptItem>
+                {
+                    // change to order.AccountNumber
+                    new ReceiptItem("Account Number", order.CustomerNumber),
+                    new ReceiptItem("Date Ordered", order.OrderDate?.ToString()),
+                    new ReceiptItem("Est. Ship Date", order.ShipmentDate?.ToString())
+                },
+
+                Title = $"Order #{order.OrderNumber}",
+                Facts = new List<Fact> {
+                    new Fact("Freight", order.Freight?.ToString()),
+                    new Fact("Tax", order.Tax?.ToString())
+                },     
+
+                Total = order.Total.ToString()
+            };
+
+            return receiptCard.ToAttachment();
         }
     }
 }

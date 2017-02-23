@@ -23,6 +23,12 @@ namespace Crm.SampleBot.Dialogs.Order
             string message = $"Inside OrderAccount";
             await context.PostAsync(message);
 
+            //var orders = await ordersApi.GetAsync(new QueryOptions { AccountNumber = "" });
+            //orders.ForEach(order =>
+            //{
+            //    //ca
+            //});
+
             //call context.done to exit this dialog and go back to the root dialog
             context.Done(context);
         }
