@@ -14,16 +14,16 @@ namespace Crm.SampleBot.Dialogs
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
-        static ResourceManager rm = new ResourceManager("Crm.SampleBot.Resources.RootDialog", Assembly.GetExecutingAssembly());
+        static ResourceManager rmRootDialog = new ResourceManager("Crm.SampleBot.Resources.RootDialog", Assembly.GetExecutingAssembly());
 
         //Set the language to be used; you can change this on-demand to change the langauage across the app
         //You will pass this everytime you request a value from the resx file
-        static CultureInfo ci = new CultureInfo("en-US");
+        static CultureInfo ciEnglish = new CultureInfo("en-US");
         
         // Options for user to choose
-        private static string OrderStatusOption = rm.GetString("OrderStatusOption", ci);
-        private static string ServiceRepresentative = rm.GetString("ServiceRepresentative", ci);
-        private static string MoreOptions = rm.GetString("MoreOptions", ci);
+        private static string OrderStatusOption = rmRootDialog.GetString("OrderStatusOption", ciEnglish);
+        private static string ServiceRepresentative = rmRootDialog.GetString("ServiceRepresentative", ciEnglish);
+        private static string MoreOptions = rmRootDialog.GetString("MoreOptions", ciEnglish);
 
         private readonly IDialogFactory dialogFactory;
 
@@ -43,7 +43,7 @@ namespace Crm.SampleBot.Dialogs
                 context,
                 this.OnOptionSelected,
                 new List<string>() { OrderStatusOption, ServiceRepresentative, MoreOptions },
-                String.Format(rm.GetString("DontUnderstand", ci) + " '" + result.Query + "'..." + rm.GetString("WhatToDo", ci)), rm.GetString("NotValid", ci));
+                String.Format(rmRootDialog.GetString("DontUnderstand", ciEnglish) + " '" + result.Query + "'..." + rmRootDialog.GetString("WhatToDo", ciEnglish)), rmRootDialog.GetString("NotValid", ciEnglish));
 
             return Task.CompletedTask;
         }
@@ -52,7 +52,7 @@ namespace Crm.SampleBot.Dialogs
         public async Task GreetingReceivedAsync(IDialogContext context, LuisResult result)
         {
             // go to main menu with choices - prompt to choose "What would you like to do?"
-            await context.PostAsync(rm.GetString("Greeting", ci));
+            await context.PostAsync(rmRootDialog.GetString("Greeting", ciEnglish));
         }
 
         [LuisIntent("Order")]
@@ -102,7 +102,7 @@ namespace Crm.SampleBot.Dialogs
             // clear the LUIS entities from userData
             context.UserData.RemoveValue("LuisResult");
 
-            await context.PostAsync(rm.GetString("WhatElse", ci));
+            await context.PostAsync(rmRootDialog.GetString("WhatElse", ciEnglish));
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -114,7 +114,7 @@ namespace Crm.SampleBot.Dialogs
             }
             catch (TooManyAttemptsException)
             {
-                await context.PostAsync(rm.GetString("TooManyAttempts", ci));
+                await context.PostAsync(rmRootDialog.GetString("TooManyAttempts", ciEnglish));
                 await this.MessageReceivedAsync(context);
             }
         }
@@ -127,7 +127,7 @@ namespace Crm.SampleBot.Dialogs
             }
             catch (Exception ex)
             {
-                await context.PostAsync(rm.GetString("FailedWithMessage", ci) + ": " + ex.Message);
+                await context.PostAsync(rmRootDialog.GetString("FailedWithMessage", ciEnglish) + ": " + ex.Message);
             }
             finally
             {
